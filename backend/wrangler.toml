@@ -3,6 +3,13 @@ main = "src/index.ts"
 compatibility_date = "2024-04-05"
 compatibility_flags = ["nodejs_compat"]
 
+[vars]
+DATABASE_URL="prisma://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5IjoiMDBmMWIzMTgtNjY3NS00MTk0LTliOTMtYmNiZjBkYmQwZGUyIiwidGVuYW50X2lkIjoiMGZmYWIwNzFhYThjNzhjNDA2ZTIzZTQyMzM5MTdjNDNkOWExNzBlNDdmMGJkMjE1ZGM3YTVmZDQwOWZjMWQxNSIsImludGVybmFsX3NlY3JldCI6IjM0MzhhMDE5LTY4YjYtNGI4MS04MDcwLWJhYmM4Nzk2ZGJlMiJ9.cbSRqwMs9EwGia_yTyDR2litxBy7LnuYJbIDbbiWDms"
+HASH_PASSWORD="jseifjesilre3"
+GOOGLE_CLIENT_ID="371805921596-6t1ajrhm45v46ik035fn8fufclcli09u.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET="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"
+BACKEND_API="https://backend.akshatkindle.workers.dev"
+
 # Variable bindings. These are arbitrary, plaintext strings (similar to environment variables)
 # Note: Use secrets to store sensitive data.
 # Docs: https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables

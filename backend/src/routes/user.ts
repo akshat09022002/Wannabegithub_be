@@ -109,28 +109,37 @@ userRouter.get('/auth/google/callback', async (c) => {
 // }
 
 
-userRouter.get("/signup", async (c) => {
+userRouter.post("/signup", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
 
   try {
     const body = await getSignedCookie(c,c.env.HASH_PASSWORD,"credentials");
-    
+    const user_otp= await c.req.json();
 
-    if(!body){
+    if(!body || !user_otp){
+      await setSignedCookie(c,"credentials","",c.env.HASH_PASSWORD);
       return c.json({
         "msg":"Server Error"
       },422);
     }
 
+    
+
     const parsed_body=JSON.parse(body).credentials;
+    const parsed_otp=JSON.parse(body).otp;
+
+    console.log(String(user_otp.otp));
+    console.log(String(parsed_otp));
 
     const response = UserSignupSchema.safeParse(parsed_body);
     if (!response.success) {
-
+      await setSignedCookie(c,"credentials","",c.env.HASH_PASSWORD);
       return c.json({ "msg": "invalid credentials" }, 500);
     }
+
+    if(String(user_otp.otp)==String(parsed_otp)){
 
     const saltRounds = 10;
 
@@ -152,6 +161,7 @@ userRouter.get("/signup", async (c) => {
     })
 
     if (exists) {
+      await setSignedCookie(c,"credentials","",c.env.HASH_PASSWORD);
       return c.json({ "msg": "User already exists" }, 409)
     }
 
@@ -165,11 +175,21 @@ userRouter.get("/signup", async (c) => {
       }
     })
 
+    console.log(user);
+  }else{
+    return c.json({
+      "msg":"invalid otp",
+    })
+  }
+
+    await setSignedCookie(c,"credentials","",c.env.HASH_PASSWORD);
+
     return c.json({
       "msg": "signup successful",
     }, 200);
 
   } catch (err) {
+    await setSignedCookie(c,"credentials","",c.env.HASH_PASSWORD);
     return c.json({
       "msg": "Server Error"
     },500)

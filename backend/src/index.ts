@@ -5,7 +5,12 @@ import { cors } from 'hono/cors'
 
 const app = new Hono()
 
-app.route("api/v1/user",userRouter);
-app.use(cors());
+app.use('*',cors({
+    origin: "http://localhost:5173",
+    credentials:true
+}));
+
+app.route("/api/v1/user",userRouter);
+
 
 export default app
